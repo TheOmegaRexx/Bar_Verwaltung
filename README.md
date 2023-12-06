@@ -1,6 +1,6 @@
 # Bar-Management-System
 
-Ein einfaches, auf Python basierendes GUI für ein Bar-Management-System mit Tkinter zur Erstellung, Verwaltung und Überwachung von barbezogenen Aktivitäten. Das System umfasst Funktionen wie die Bearbeitung von Bestellungen, das Verwalten von Lagerbeständen, das Generieren von Rechnungen und die Bereitstellung statistischer Einblicke.
+Ein einfaches, auf Python basierendes GUI für ein Bar-Management-System mit CustomTkinter zur Erstellung, Verwaltung und Überwachung von barbezogenen Aktivitäten. Das System umfasst Funktionen wie die Bearbeitung von Bestellungen, das Verwalten von Lagerbeständen, das Generieren von Rechnungen und die Bereitstellung statistischer Einblicke.
 
 ## Funktionen
 
