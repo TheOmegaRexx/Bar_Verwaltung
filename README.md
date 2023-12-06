@@ -27,8 +27,4 @@ Ein einfaches, auf Python basierendes GUI für ein Bar-Management-System mit Tki
 - Verwalten Sie Bestellungen, Lagerbestände, Rechnungen und sehen Sie sich bei Bedarf Statistiken an.
 - Passen Sie den Code und die Benutzeroberfläche nach Ihren spezifischen Anforderungen für das Bar-Management an.
 
-Pull Requests und Beiträge sind willkommen!
 
----
-
-*Hinweis: Ersetzen Sie "bar_management_system.py" durch den tatsächlichen Namen Ihrer Haupt-Python-Skriptdatei, falls sie sich unterscheidet.*
