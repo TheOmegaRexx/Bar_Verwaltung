@@ -1,4 +1,5 @@
 from tkinter import *
+# Stelle sicher, dass CTkMessagebox korrekt importiert ist
 from CTkMessagebox import CTkMessagebox
 import mysql.connector
 import customtkinter
@@ -12,17 +13,16 @@ geld = 100
 
 class GUI:
     def __init__(self):
+        # Initialisierung des Hauptfensters
         self.fenster = customtkinter.CTk()
         self.fenster.title("Bar")
-        self.fenster.geometry()
-        self.fenster.resizable(False, False)
+        self.fenster.geometry()  # Hier solltest du die Größe des Fensters angeben
+        # self.fenster.resizable(False, False)
 
+        # Erstellung von GUI-Elementen im Hauptfenster
         self.titel_label = customtkinter.CTkLabel(self.fenster, text="Bar")
         self.titel_label.grid(row=0, column=0)
 
-        self.geld_label = customtkinter.CTkLabel(
-            self.fenster, text=f"Geld:{geld}")
-        self.geld_label.grid(row=0, column=1)
 
         self.bar_button = customtkinter.CTkButton(
             self.fenster, text="Tressen", command=self.tressen_oeffnen)
@@ -41,7 +41,6 @@ class GUI:
         self.statistiken_button.grid(row=4, column=0, padx=5, pady=5, sticky=E)
 
         self.fenster.mainloop()
-        
 
     def tressen_oeffnen(self):
         tressen = Tressen()
@@ -56,93 +55,145 @@ class GUI:
         statistiken = Statistik()
 
 
-class Tressen():
-        def __init__(self):
-            preis = 0
-            self.tressen_fenster = customtkinter.CTk()
-            self.tressen_fenster.title("Tressen")
-            self.tressen_fenster.geometry()
-            self.tressen_fenster.resizable(False, False)
+class Tressen:
+    def __init__(self):
+        self.preis = 0.0
+        # Initialisierung des Fensters für die Tresenansicht
+        self.tressen_fenster = customtkinter.CTk()
+        self.tressen_fenster.title("Tressen")
+        self.tressen_fenster.geometry()
+        self.tressen_fenster.resizable(False, False)
 
-            self.tressen_label = customtkinter.CTkLabel(
-                self.tressen_fenster, text="Tressen")
-            self.tressen_label.grid(row=0, column=0)
-
-            self.auswahl_label = customtkinter.CTkLabel(
-                self.tressen_fenster, text="Artikel")
-            self.auswahl_label.grid(row=1, column=0)
-
-            self.bestellung_label = customtkinter.CTkLabel(
-                self.tressen_fenster, text="Bestellung")
-            self.bestellung_label.grid(row=1, column=1)
-
-            self.preis_label = customtkinter.CTkLabel(self.tressen_fenster, text=f"Preis: {preis}")
-            self.preis_label.grid(row=0, column=1)
-
-            self.auswahl_listbox = CTkListbox(self.tressen_fenster)
-            self.auswahl_listbox.grid(row=2, column=0)
-
-            self.bestellung_listbox = CTkListbox(self.tressen_fenster)
-            self.bestellung_listbox.grid(row=2, column = 1)
-
-            self.hinzufuegen_button = customtkinter.CTkButton(self.tressen_fenster, text="Hinzufügen", command=self.hinzufuegen)
-            self.hinzufuegen_button.grid(row=3, column=0)
-
-            self.entfernen_button = customtkinter.CTkButton(self.tressen_fenster, text="Entfernen", command=self.entfernen)
-            self.entfernen_button.grid(row=3, column=1)
-
-            self.bestellung_button = customtkinter.CTkButton(self.tressen_fenster, text="Bestellen", command=self.bestellung)
-            self.bestellung_button.grid(row=4, column=1)
-
-            self.nachricht_button = customtkinter.CTkButton(self.tressen_fenster, text="Nachricht", command=self.nachricht)
-            self.nachricht_button.grid(row=4, column=0)
+        # Erstellung von GUI-Elementen für die Tresenansicht
+        self.auswahl_label = customtkinter.CTkLabel(
+            self.tressen_fenster, text="Artikel")
+        self.auswahl_label.grid(row=0, column=0)
 
 
-            self.tressen_fenster.mainloop()
+
+        self.preis_label = customtkinter.CTkLabel(
+            self.tressen_fenster, text=f"Preis: {self.preis}")
+        self.preis_label.grid(row=0, column=1)
+
+        # Erstellung von Registerkarten für Getränke, Snacks und Rauchwaren
+        self.artikel_tab = customtkinter.CTkTabview(self.tressen_fenster)
+        self.artikel_tab.grid(row=1, column=0)
+
+        self.artikel_tab_getraenke = self.artikel_tab.add("Getränke")
+        self.artikel_tab_snacks = self.artikel_tab.add("Snacks")
+        self.artikel_tab_rauchwaren = self.artikel_tab.add("Rauchwaren")
+
+        # Erstellung von Listboxen für die einzelnen Artikelkategorien
+        self.auswahl_listbox_getraenke = CTkListbox(self.artikel_tab_getraenke)
+        self.auswahl_listbox_getraenke.grid()
+
+        self.auswahl_listbox_snacks = CTkListbox(self.artikel_tab_snacks)
+        self.auswahl_listbox_snacks.grid()
+
+        self.auswahl_listbox_rauchwaren = CTkListbox(
+            self.artikel_tab_rauchwaren)
+        self.auswahl_listbox_rauchwaren.grid()
+
+        # Erstellung einer Listbox für die Bestellung
+        self.bestellung_listbox = CTkListbox(self.tressen_fenster)
+        self.bestellung_listbox.grid(row=1, column=1)
+
+        # Erstellung von Buttons für Aktionen in der Tresenansicht
+        self.hinzufuegen_button = customtkinter.CTkButton(
+            self.tressen_fenster, text="Hinzufügen", command=self.hinzufuegen)
+        self.hinzufuegen_button.grid(row=3, column=0)
+
+        self.entfernen_button = customtkinter.CTkButton(
+            self.tressen_fenster, text="Entfernen", command=self.entfernen)
+        self.entfernen_button.grid(row=3, column=1)
+
+        self.bestellung_button = customtkinter.CTkButton(
+            self.tressen_fenster, text="Bestellen", command=self.bestellung)
+        self.bestellung_button.grid(row=4, column=1)
+
+        self.nachricht_button = customtkinter.CTkButton(
+            self.tressen_fenster, text="Nachricht", command=self.nachricht)
+        self.nachricht_button.grid(row=4, column=0)
 
 
-        def bestellung(self):
-            pass
+        for index, item in enumerate(getraenke_liste):
+            self.auswahl_listbox_getraenke.insert(index, f"{item.name} {item.preis}€")
 
-        def hinzufuegen(self):
-            pass
+        for index, item in enumerate(snacks_liste):
+            self.auswahl_listbox_snacks.insert(index, f"{item.name} {item.preis}€")
 
-        def entfernen(self):
-            pass
+        for index, item in enumerate(rauchwaren_liste):
+            self.auswahl_listbox_rauchwaren.insert(index, f"{item.name} {item.preis}€")
 
-        def nachricht(self):
-            nachrichten_fenster = customtkinter.CTkToplevel(self.tressen_fenster)
-            nachrichten_label = customtkinter.CTkLabel(nachrichten_fenster, text="Nachricht").pack()
-            nachrichten_textbox = customtkinter.CTkTextbox(nachrichten_fenster).pack()
-            nachrichten_button = customtkinter.CTkButton(nachrichten_fenster, text="Senden", command=self.nachricht_senden).pack()
+        self.tressen_fenster.mainloop()
+        
 
-            nachrichten_fenster.mainloop
+    def bestellung(self):
+        pass
 
-        def nachricht_senden(self):
-            auswahl = CTkMessagebox(title="Exit?", message="Möchten sie die Nachricht senden?",
-                        icon="question", option_1="Nein", option_2="Ja")
-            
-            wahl = auswahl.get()
-            if wahl == "Ja":
-                CTkMessagebox(title="Erfolg", message="Die Nachricht wurde Erfolgreich gesendet", icon="check")
+    def hinzufuegen(self):
+        test = self.auswahl_listbox_getraenke.get()
+        test.preis
+        self.preis = self.preis
+        print(test)
 
+    def entfernen(self):
+        pass
+
+    def nachricht(self):
+        # Erstellung eines Fensters für die Nachrichten
+        nachrichten_fenster = customtkinter.CTkToplevel(self.tressen_fenster)
+        nachrichten_label = customtkinter.CTkLabel(
+            nachrichten_fenster, text="Nachricht").pack()
+        nachrichten_textbox = customtkinter.CTkTextbox(
+            nachrichten_fenster).pack()
+        nachrichten_button = customtkinter.CTkButton(
+            nachrichten_fenster, text="Senden", command=self.nachricht_senden).pack()
+
+        nachrichten_fenster.mainloop
+
+    def nachricht_senden(self):
+        # Bestätigungsnachricht für das Senden der Nachricht
+        auswahl = CTkMessagebox(title="Exit?", message="Möchten sie die Nachricht senden?",
+                                icon="question", option_1="Nein", option_2="Ja")
+
+        wahl = auswahl.get()
+        if wahl == "Ja":
+            CTkMessagebox(
+                title="Erfolg", message="Die Nachricht wurde Erfolgreich gesendet", icon="check")
 
 
 class Lager:
     def __init__(self):
+        # Initialisierung des Lagerfensters
         self.lager_fenster = customtkinter.CTk()
         self.lager_fenster.title("Lager")
         self.lager_fenster.geometry()
         self.lager_fenster.resizable(False, False)
 
+        # Erstellung von GUI-Elementen im Lagerfenster
         self.artikel_label = customtkinter.CTkLabel(
             self.lager_fenster, text="Lager")
         self.artikel_label.grid(row=0, column=0)
 
-        self.artikel_listbox = CTkListbox(self.lager_fenster)
-        self.artikel_listbox.grid(row=1)
+        self.artikel_tab = customtkinter.CTkTabview(self.lager_fenster)
+        self.artikel_tab.grid(row=1, column=0)
 
-        self.artikel_listbox.insert(0, "Name 0 3$")
+        self.artikel_tab_getraenke = self.artikel_tab.add("Getränke")
+        self.artikel_tab_snacks = self.artikel_tab.add("Snacks")
+        self.artikel_tab_rauchwaren = self.artikel_tab.add("Rauchwaren")
+
+        # Erstellung von Listboxen für die einzelnen Artikelkategorien
+        self.auswahl_listbox_getraenke = CTkListbox(self.artikel_tab_getraenke)
+        self.auswahl_listbox_getraenke.grid()
+
+        self.auswahl_listbox_snacks = CTkListbox(self.artikel_tab_snacks)
+        self.auswahl_listbox_snacks.grid()
+
+        self.auswahl_listbox_rauchwaren = CTkListbox(
+            self.artikel_tab_rauchwaren)
+        self.auswahl_listbox_rauchwaren.grid()
+
 
         self.artikel_hinzufuegen_button = customtkinter.CTkButton(
             self.lager_fenster, text="Hinzufügen", command=self.artikel_hinzufuegen)
@@ -151,6 +202,17 @@ class Lager:
         self.artikel_entfernen_button = customtkinter.CTkButton(
             self.lager_fenster, text="Entfernen", command=self.artikel_entfernen)
         self.artikel_entfernen_button.grid(row=3)
+
+        for index, item in enumerate(getraenke_liste):
+            self.auswahl_listbox_getraenke.insert(index, f"{item.name} {item.menge}")
+
+        for index, item in enumerate(snacks_liste):
+            self.auswahl_listbox_snacks.insert(index, f"{item.name} {item.menge}")
+
+        for index, item in enumerate(rauchwaren_liste):
+            self.auswahl_listbox_rauchwaren.insert(index, f"{item.name} {item.menge}")
+
+
 
         self.lager_fenster.mainloop()
 
@@ -161,13 +223,15 @@ class Lager:
         pass
 
 
-class Rechnungen():
+class Rechnungen:
     def __init__(self):
+        # Initialisierung des Rechnungsfensters
         self.rechnungs_fenster = customtkinter.CTk()
         self.rechnungs_fenster.title("Rechnugen")
         self.rechnungs_fenster.geometry()
         self.rechnungs_fenster.resizable(False, False)
 
+        # Erstellung von GUI-Elementen im Rechnungsfenster
         self.rechnungen_label = customtkinter.CTkLabel(
             self.rechnungs_fenster, text="Rechnungen")
         self.rechnungen_label.grid(row=0, column=0)
@@ -177,7 +241,8 @@ class Rechnungen():
 
         self.rechnungs_listbox.insert(0, "Option 0")
 
-        self.rechnungs_textbox = customtkinter.CTkTextbox(self.rechnungs_fenster)
+        self.rechnungs_textbox = customtkinter.CTkTextbox(
+            self.rechnungs_fenster)
         self.rechnungs_textbox.grid(row=1, column=1)
 
         self.speichern_button = customtkinter.CTkButton(
@@ -190,13 +255,15 @@ class Rechnungen():
         pass
 
 
-class Statistik():
+class Statistik:
     def __init__(self):
+        # Initialisierung des Statistikfensters
         self.statistik_fenster = customtkinter.CTk()
         self.statistik_fenster.title("Statistiken")
         self.statistik_fenster.geometry()
         self.statistik_fenster.resizable(False, False)
 
+        # Erstellung von GUI-Elementen im Statistikfenster
         self.geld_label = customtkinter.CTkLabel(
             self.statistik_fenster, text=f"Geld: {geld}")
         self.geld_label.grid(row=0, column=0)
@@ -220,7 +287,7 @@ class Statistik():
         self.statistik_fenster.mainloop()
 
 
-class Artikel():
+class Artikel:
     def __init__(self, name, preis, menge):
         self.name = name
         self.preis = preis
@@ -246,4 +313,42 @@ class Rauchwaren(Artikel):
 
 
 if __name__ == "__main__":
+    getraenke_liste = [
+    Getränke("Cola", 2.5, 100, 1.5),
+    Getränke("Bier", 3.0, 50, 0.5),
+    Getränke("Wasser", 1.0, 200, 2.0, alkohol=False),
+    Getränke("Eistee", 2.0, 80, 1.0),
+    Getränke("Orangensaft", 2.8, 120, 1.0, eis=True),
+    Getränke("Wein", 8.0, 30, 0.75),
+    Getränke("Energy Drink", 2.5, 60, 0.25),
+    Getränke("Smoothie", 4.0, 40, 0.5, alkohol=False, eis=True),
+    Getränke("Eiskaffee", 3.5, 45, 0.3, eis=True),
+    Getränke("Whisky", 20.0, 10, 0.7),
+    ]
+
+    snacks_liste = [
+        Snacks("Chips", 2.0, 80),
+        Snacks("Schokoriegel", 1.5, 120),
+        Snacks("Studentenfutter", 3.0, 50),
+        Snacks("Pretzel", 1.0, 100),
+        Snacks("Gemüsesticks", 2.5, 60),
+        Snacks("Popcorn", 1.8, 70),
+        Snacks("Nüsse", 3.0, 40),
+        Snacks("Obstsalat", 2.2, 90),
+        Snacks("Cracker", 1.2, 110),
+        Snacks("Käsestangen", 2.8, 30),
+    ]
+
+    rauchwaren_liste = [
+        Rauchwaren("Zigaretten", 6.0, 50),
+        Rauchwaren("Zigarillos", 8.0, 30),
+        Rauchwaren("Pfeifentabak", 10.0, 20),
+        Rauchwaren("Zigarren", 12.0, 15),
+        Rauchwaren("Filter", 1.0, 100),
+        Rauchwaren("Feuerzeug", 2.5, 80),
+        Rauchwaren("Aschenbecher", 3.0, 40),
+        Rauchwaren("Tabakdose", 5.0, 25),
+        Rauchwaren("Zündhölzer", 0.5, 150),
+        Rauchwaren("Wasserpfeife", 20.0, 10),
+    ]
     Test = GUI()
