@@ -1,5 +1,4 @@
 from tkinter import *
-# Stelle sicher, dass CTkMessagebox korrekt importiert ist
 from CTkMessagebox import CTkMessagebox
 import mysql.connector
 import customtkinter
@@ -10,7 +9,7 @@ import random
 
 geld = 100
 
-l
+
 class GUI:
     def __init__(self):
         # Initialisierung des Hauptfensters
