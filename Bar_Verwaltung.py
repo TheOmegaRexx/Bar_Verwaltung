@@ -310,88 +310,67 @@ class Rauchwaren(Artikel):
         super().__init__(name, preis, menge, id)
 
 
-def getraenke_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
+class Datenbank:
+    def __init__(self, host, user, password, database):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
+        self.connection = None
 
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
+    def verbinden(self):
+        self.connection = mysql.connector.connect(
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database
+        )
 
-    getraenke_liste = []
-    cursor.execute(
-        "SELECT name, preis, menge, liter, alkohol, id FROM Getraenke")
-    for (name, preis, menge, liter, alkohol, id) in cursor:
-        getraenke_liste.append(
-            Getränke(name, preis, menge, liter, alkohol, id))
-    cursor.close()
+    def verbindung_schliessen(self):
+        if self.connection:
+            self.connection.close()
 
-    connection.close()
+    def db_snacks(self):
+        snacks_liste = []
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT name, preis, menge, id FROM Snacks")
+        for (name, preis, menge, id) in cursor:
+            snacks_liste.append(Snacks(name, preis, menge, id))
+        cursor.close()
+        return snacks_liste
 
-    return getraenke_liste
+    def db_rauchwaren(self):
+        rauchwaren_liste = []
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT name, preis, menge, id FROM Getraenke")
+        for (name, preis, menge, id) in cursor:
+            rauchwaren_liste.append(Rauchwaren(name, preis, menge, id))
+        cursor.close()
+        return rauchwaren_liste
 
-
-def snacks_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
-
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
-
-    snacks_liste = []
-    cursor.execute("SELECT name, preis, menge, id FROM Snacks")
-    for (name, preis, menge, id) in cursor:
-        snacks_liste.append(Snacks(name, preis, menge, id))
-    cursor.close()
-
-    connection.close()
-
-    return snacks_liste
-
-
-def rauchwaren_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
-
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
-
-    rauchwaren_liste = []
-    cursor.execute("SELECT name, preis, menge, id FROM Getraenke")
-    for (name, preis, menge, id) in cursor:
-        rauchwaren_liste.append(Rauchwaren(name, preis, menge, id))
-    cursor.close()
-
-    connection.close()
-
-    return rauchwaren_liste
-
+    def db_getraenke(self):
+        getraenke_liste = []
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT name, preis, menge, liter, alkohol, id FROM Getraenke")
+        for (name, preis, menge, liter, alkohol, id) in cursor:
+            getraenke_liste.append(Getränke(name, preis, menge, liter, alkohol, id))
+        cursor.close()
+        return getraenke_liste
 
 
 if __name__ == "__main__":
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
 
-    getraenke_liste = getraenke_datenbank()
-    snacks_liste = snacks_datenbank()
-    rauchwaren_liste = rauchwaren_datenbank()
+    datenbank = Datenbank(HOST, USER, PASSWORD, DATABASE)
+    datenbank.verbinden()
 
-    Test = GUI()
+    getraenke_liste = datenbank.db_getraenke()
+    snacks_liste = datenbank.db_snacks()
+    rauchwaren_liste = datenbank.db_rauchwaren()
+
+    datenbank.verbindung_schliessen()
+
+    Test = GUI() 
