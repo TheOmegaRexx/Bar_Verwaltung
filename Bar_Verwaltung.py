@@ -1,3 +1,4 @@
+from tkinter import *
 from CTkMessagebox import CTkMessagebox
 import mysql.connector
 import customtkinter
@@ -7,6 +8,83 @@ import time
 import random
 
 geld = 100
+
+
+def getraenke_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    getraenke_liste = []
+    cursor.execute(
+        "SELECT name, preis, menge, liter, alkohol, id FROM Getraenke")
+    for (name, preis, menge, liter, alkohol, id) in cursor:
+        getraenke_liste.append(
+            Getränke(name, preis, menge, liter, alkohol, id))
+    cursor.close()
+
+    connection.close()
+
+    return getraenke_liste
+
+
+def snacks_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    snacks_liste = []
+    cursor.execute("SELECT name, preis, menge, id FROM Snacks")
+    for (name, preis, menge, id) in cursor:
+        snacks_liste.append(Snacks(name, preis, menge, id))
+    cursor.close()
+
+    connection.close()
+
+    return snacks_liste
+
+
+def rauchwaren_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    rauchwaren_liste = []
+    cursor.execute("SELECT name, preis, menge, id FROM Getraenke")
+    for (name, preis, menge, id) in cursor:
+        rauchwaren_liste.append(Rauchwaren(name, preis, menge, id))
+    cursor.close()
+
+    connection.close()
+
+    return rauchwaren_liste
 
 
 class GUI:
@@ -284,67 +362,34 @@ class Statistik:
 
 
 class Artikel:
-    def __init__(self, name, preis, menge):
+    def __init__(self, name, preis, menge, id):
         self.name = name
         self.preis = preis
         self.menge = menge
 
 
 class Getränke(Artikel):
-    def __init__(self, name, preis, menge, liter, alkohol=True, eis=False):
+    def __init__(self, name, preis, menge, id, liter, alkohol=True):
         self.liter = liter
         self.alkohol = alkohol
-        self.eis = eis
-        super().__init__(name, preis, menge)
+        super().__init__(name, preis, menge, id)
 
 
 class Snacks(Artikel):
-    def __init__(self, name, preis, menge):
-        super().__init__(name, preis, menge)
+    def __init__(self, name, preis, menge, id):
+        super().__init__(name, preis, menge, id)
 
 
 class Rauchwaren(Artikel):
-    def __init__(self, name, preis, menge):
-        super().__init__(name, preis, menge)
+    def __init__(self, name, preis, menge, id):
+        super().__init__(name, preis, menge, id)
 
 
 if __name__ == "__main__":
-    getraenke_liste = [
-        Getränke("Cola", 2.5, 100, 1.5),
-        Getränke("Bier", 3.0, 50, 0.5),
-        Getränke("Wasser", 1.0, 200, 2.0, alkohol=False),
-        Getränke("Eistee", 2.0, 80, 1.0),
-        Getränke("Orangensaft", 2.8, 120, 1.0, eis=True),
-        Getränke("Wein", 8.0, 30, 0.75),
-        Getränke("Energy Drink", 2.5, 60, 0.25),
-        Getränke("Smoothie", 4.0, 40, 0.5, alkohol=False, eis=True),
-        Getränke("Eiskaffee", 3.5, 45, 0.3, eis=True),
-        Getränke("Whisky", 20.0, 10, 0.7),
-    ]
 
-    snacks_liste = [
-        Snacks("Chips", 2.0, 80),
-        Snacks("Schokoriegel", 1.5, 120),
-        Snacks("Studentenfutter", 3.0, 50),
-        Snacks("Pretzel", 1.0, 100),
-        Snacks("Gemüsesticks", 2.5, 60),
-        Snacks("Popcorn", 1.8, 70),
-        Snacks("Nüsse", 3.0, 40),
-        Snacks("Obstsalat", 2.2, 90),
-        Snacks("Cracker", 1.2, 110),
-        Snacks("Käsestangen", 2.8, 30),
-    ]
+    # Beispielaufruf
+    getraenke_liste = getraenke_datenbank()
+    snacks_liste = snacks_datenbank()
+    rauchwaren_liste = rauchwaren_datenbank()
 
-    rauchwaren_liste = [
-        Rauchwaren("Zigaretten", 6.0, 50),
-        Rauchwaren("Zigarillos", 8.0, 30),
-        Rauchwaren("Pfeifentabak", 10.0, 20),
-        Rauchwaren("Zigarren", 12.0, 15),
-        Rauchwaren("Filter", 1.0, 100),
-        Rauchwaren("Feuerzeug", 2.5, 80),
-        Rauchwaren("Aschenbecher", 3.0, 40),
-        Rauchwaren("Tabakdose", 5.0, 25),
-        Rauchwaren("Zündhölzer", 0.5, 150),
-        Rauchwaren("Wasserpfeife", 20.0, 10),
-    ]
     Test = GUI()
