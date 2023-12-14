@@ -10,82 +10,6 @@ import random
 geld = 100
 
 
-def getraenke_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
-
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
-
-    getraenke_liste = []
-    cursor.execute(
-        "SELECT name, preis, menge, liter, alkohol, id FROM Getraenke")
-    for (name, preis, menge, liter, alkohol, id) in cursor:
-        getraenke_liste.append(
-            Getränke(name, preis, menge, liter, alkohol, id))
-    cursor.close()
-
-    connection.close()
-
-    return getraenke_liste
-
-
-def snacks_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
-
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
-
-    snacks_liste = []
-    cursor.execute("SELECT name, preis, menge, id FROM Snacks")
-    for (name, preis, menge, id) in cursor:
-        snacks_liste.append(Snacks(name, preis, menge, id))
-    cursor.close()
-
-    connection.close()
-
-    return snacks_liste
-
-
-def rauchwaren_datenbank():
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "pass"
-    DATABASE = "barverwaltung"
-
-    connection = mysql.connector.connect(
-        host=HOST,
-        user=USER,
-        password=PASSWORD,
-        database=DATABASE
-    )
-    cursor = connection.cursor()
-
-    rauchwaren_liste = []
-    cursor.execute("SELECT name, preis, menge, id FROM Getraenke")
-    for (name, preis, menge, id) in cursor:
-        rauchwaren_liste.append(Rauchwaren(name, preis, menge, id))
-    cursor.close()
-
-    connection.close()
-
-    return rauchwaren_liste
-
 
 class GUI:
     def __init__(self):
@@ -219,7 +143,7 @@ class Tressen:
         nachrichten_fenster = customtkinter.CTkToplevel(self.tressen_fenster)
         nachrichten_label = customtkinter.CTkLabel(
             nachrichten_fenster, text="Nachricht").pack()
-        nachrichten_textbox = customtkinter.CTkTextbox(
+        nachrichten_textbox = customtkinter.CTkEntry(
             nachrichten_fenster).pack()
         nachrichten_button = customtkinter.CTkButton(
             nachrichten_fenster, text="Senden", command=self.nachricht_senden).pack()
@@ -233,6 +157,7 @@ class Tressen:
 
         wahl = auswahl.get()
         if wahl == "Ja":
+  
             CTkMessagebox(
                 title="Erfolg", message="Die Nachricht wurde Erfolgreich gesendet", icon="check")
 
@@ -385,9 +310,86 @@ class Rauchwaren(Artikel):
         super().__init__(name, preis, menge, id)
 
 
+def getraenke_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    getraenke_liste = []
+    cursor.execute(
+        "SELECT name, preis, menge, liter, alkohol, id FROM Getraenke")
+    for (name, preis, menge, liter, alkohol, id) in cursor:
+        getraenke_liste.append(
+            Getränke(name, preis, menge, liter, alkohol, id))
+    cursor.close()
+
+    connection.close()
+
+    return getraenke_liste
+
+
+def snacks_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    snacks_liste = []
+    cursor.execute("SELECT name, preis, menge, id FROM Snacks")
+    for (name, preis, menge, id) in cursor:
+        snacks_liste.append(Snacks(name, preis, menge, id))
+    cursor.close()
+
+    connection.close()
+
+    return snacks_liste
+
+
+def rauchwaren_datenbank():
+    HOST = "localhost"
+    USER = "root"
+    PASSWORD = "pass"
+    DATABASE = "barverwaltung"
+
+    connection = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
+    )
+    cursor = connection.cursor()
+
+    rauchwaren_liste = []
+    cursor.execute("SELECT name, preis, menge, id FROM Getraenke")
+    for (name, preis, menge, id) in cursor:
+        rauchwaren_liste.append(Rauchwaren(name, preis, menge, id))
+    cursor.close()
+
+    connection.close()
+
+    return rauchwaren_liste
+
+
+
 if __name__ == "__main__":
 
-    # Beispielaufruf
     getraenke_liste = getraenke_datenbank()
     snacks_liste = snacks_datenbank()
     rauchwaren_liste = rauchwaren_datenbank()
