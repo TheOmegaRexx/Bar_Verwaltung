@@ -10,7 +10,7 @@ import random
 
 geld = 100
 
-
+l
 class GUI:
     def __init__(self):
         # Initialisierung des Hauptfensters
