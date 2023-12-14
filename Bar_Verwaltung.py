@@ -1,4 +1,3 @@
-from tkinter import *
 from CTkMessagebox import CTkMessagebox
 import mysql.connector
 import customtkinter
@@ -21,7 +20,6 @@ class GUI:
         # Erstellung von GUI-Elementen im Hauptfenster
         self.titel_label = customtkinter.CTkLabel(self.fenster, text="Bar")
         self.titel_label.grid(row=0, column=0)
-
 
         self.bar_button = customtkinter.CTkButton(
             self.fenster, text="Tressen", command=self.tressen_oeffnen)
@@ -68,8 +66,6 @@ class Tressen:
             self.tressen_fenster, text="Artikel")
         self.auswahl_label.grid(row=0, column=0)
 
-
-
         self.preis_label = customtkinter.CTkLabel(
             self.tressen_fenster, text=f"Preis: {self.preis}")
         self.preis_label.grid(row=0, column=1)
@@ -114,18 +110,19 @@ class Tressen:
             self.tressen_fenster, text="Nachricht", command=self.nachricht)
         self.nachricht_button.grid(row=4, column=0)
 
-
         for index, item in enumerate(getraenke_liste):
-            self.auswahl_listbox_getraenke.insert(index, f"{item.name} {item.preis}€")
+            self.auswahl_listbox_getraenke.insert(
+                index, f"{item.name} {item.preis}€")
 
         for index, item in enumerate(snacks_liste):
-            self.auswahl_listbox_snacks.insert(index, f"{item.name} {item.preis}€")
+            self.auswahl_listbox_snacks.insert(
+                index, f"{item.name} {item.preis}€")
 
         for index, item in enumerate(rauchwaren_liste):
-            self.auswahl_listbox_rauchwaren.insert(index, f"{item.name} {item.preis}€")
+            self.auswahl_listbox_rauchwaren.insert(
+                index, f"{item.name} {item.preis}€")
 
         self.tressen_fenster.mainloop()
-        
 
     def bestellung(self):
         pass
@@ -193,7 +190,6 @@ class Lager:
             self.artikel_tab_rauchwaren)
         self.auswahl_listbox_rauchwaren.grid()
 
-
         self.artikel_hinzufuegen_button = customtkinter.CTkButton(
             self.lager_fenster, text="Hinzufügen", command=self.artikel_hinzufuegen)
         self.artikel_hinzufuegen_button.grid(row=2)
@@ -203,15 +199,16 @@ class Lager:
         self.artikel_entfernen_button.grid(row=3)
 
         for index, item in enumerate(getraenke_liste):
-            self.auswahl_listbox_getraenke.insert(index, f"{item.name} {item.menge}")
+            self.auswahl_listbox_getraenke.insert(
+                index, f"{item.name} {item.menge}")
 
         for index, item in enumerate(snacks_liste):
-            self.auswahl_listbox_snacks.insert(index, f"{item.name} {item.menge}")
+            self.auswahl_listbox_snacks.insert(
+                index, f"{item.name} {item.menge}")
 
         for index, item in enumerate(rauchwaren_liste):
-            self.auswahl_listbox_rauchwaren.insert(index, f"{item.name} {item.menge}")
-
-
+            self.auswahl_listbox_rauchwaren.insert(
+                index, f"{item.name} {item.menge}")
 
         self.lager_fenster.mainloop()
 
@@ -313,16 +310,16 @@ class Rauchwaren(Artikel):
 
 if __name__ == "__main__":
     getraenke_liste = [
-    Getränke("Cola", 2.5, 100, 1.5),
-    Getränke("Bier", 3.0, 50, 0.5),
-    Getränke("Wasser", 1.0, 200, 2.0, alkohol=False),
-    Getränke("Eistee", 2.0, 80, 1.0),
-    Getränke("Orangensaft", 2.8, 120, 1.0, eis=True),
-    Getränke("Wein", 8.0, 30, 0.75),
-    Getränke("Energy Drink", 2.5, 60, 0.25),
-    Getränke("Smoothie", 4.0, 40, 0.5, alkohol=False, eis=True),
-    Getränke("Eiskaffee", 3.5, 45, 0.3, eis=True),
-    Getränke("Whisky", 20.0, 10, 0.7),
+        Getränke("Cola", 2.5, 100, 1.5),
+        Getränke("Bier", 3.0, 50, 0.5),
+        Getränke("Wasser", 1.0, 200, 2.0, alkohol=False),
+        Getränke("Eistee", 2.0, 80, 1.0),
+        Getränke("Orangensaft", 2.8, 120, 1.0, eis=True),
+        Getränke("Wein", 8.0, 30, 0.75),
+        Getränke("Energy Drink", 2.5, 60, 0.25),
+        Getränke("Smoothie", 4.0, 40, 0.5, alkohol=False, eis=True),
+        Getränke("Eiskaffee", 3.5, 45, 0.3, eis=True),
+        Getränke("Whisky", 20.0, 10, 0.7),
     ]
 
     snacks_liste = [
