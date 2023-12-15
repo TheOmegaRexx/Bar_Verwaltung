@@ -311,13 +311,15 @@ class Rauchwaren(Artikel):
 
 
 class Datenbank:
+    # Konstruktor mit den notwendigen Parametern für die Datenbankverbindung
     def __init__(self, host, user, password, database):
         self.host = host
         self.user = user
         self.password = password
         self.database = database
-        self.connection = None
+        self.connection = None  # Initialisierung der Verbindungsvariable
 
+    # Methode zum Herstellen einer Verbindung zur Datenbank
     def verbinden(self):
         self.connection = mysql.connector.connect(
             host=self.host,
@@ -326,10 +328,12 @@ class Datenbank:
             database=self.database
         )
 
+    # Methode zum Schließen der Datenbankverbindung
     def verbindung_schliessen(self):
         if self.connection:
             self.connection.close()
 
+    # Methode zur Abfrage und Rückgabe der Snacks aus der Datenbank
     def db_snacks(self):
         snacks_liste = []
         cursor = self.connection.cursor()
@@ -339,6 +343,7 @@ class Datenbank:
         cursor.close()
         return snacks_liste
 
+    # Methode zur Abfrage und Rückgabe der Rauchwaren aus der Datenbank
     def db_rauchwaren(self):
         rauchwaren_liste = []
         cursor = self.connection.cursor()
@@ -348,6 +353,7 @@ class Datenbank:
         cursor.close()
         return rauchwaren_liste
 
+    # Methode zur Abfrage und Rückgabe der Getränke aus der Datenbank
     def db_getraenke(self):
         getraenke_liste = []
         cursor = self.connection.cursor()
@@ -357,20 +363,26 @@ class Datenbank:
         cursor.close()
         return getraenke_liste
 
-
 if __name__ == "__main__":
+    # Definition der Verbindungsinformationen
     HOST = "localhost"
     USER = "root"
     PASSWORD = "pass"
     DATABASE = "barverwaltung"
 
+    # Erstellen einer Datenbankinstanz mit den Verbindungsinformationen
     datenbank = Datenbank(HOST, USER, PASSWORD, DATABASE)
+    
+    # Herstellen der Verbindung zur Datenbank
     datenbank.verbinden()
 
+    # Abrufen der Listen von Getränken, Snacks und Rauchwaren aus der Datenbank
     getraenke_liste = datenbank.db_getraenke()
     snacks_liste = datenbank.db_snacks()
     rauchwaren_liste = datenbank.db_rauchwaren()
 
+    # Schließen der Datenbankverbindung
     datenbank.verbindung_schliessen()
 
-    Test = GUI() 
+    # Erstellen einer GUI-Instanz (vorausgesetzt, dass die GUI-Klasse implementiert ist)
+    Test = GUI()
