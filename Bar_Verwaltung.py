@@ -4,10 +4,36 @@ import mysql.connector
 import customtkinter
 from CTkListbox import *
 from abc import ABC, abstractclassmethod
-import time
-import random
+
 
 geld = 100
+
+class Login:
+    def __init__(self):
+        self.login_fenster = customtkinter.CTk()
+        self.login_fenster.title("Login")
+        self.login_fenster.geometry("360x180")
+        self.login_fenster.resizable(False, False)
+    
+        self.benutzer_label = customtkinter.CTkLabel(self.login_fenster, text="Benutzer")
+        self.benutzer_label.pack()
+
+        self.benutzer_entry = customtkinter.CTkEntry(self.login_fenster)
+        self.benutzer_entry.pack()
+
+        self.passwort_label = customtkinter.CTkLabel(self.login_fenster, text="Passwort")
+        self.passwort_label.pack()
+
+        self.passwort_entry = customtkinter.CTkEntry(self.login_fenster)
+        self.passwort_entry.pack()
+
+        self.login_button = customtkinter.CTkButton(self.login_fenster, text="Login", command=self.einlogen)
+        self.login_button.pack(pady=20)
+        self.login_fenster.mainloop()
+
+    def einlogen(self):
+        benutzer = self.benutzer_entry.get()
+        passwort = self.passwort_entry.get()
 
 
 
@@ -363,6 +389,7 @@ class Datenbank:
         cursor.close()
         return getraenke_liste
 
+
 if __name__ == "__main__":
     # Definition der Verbindungsinformationen
     HOST = "localhost"
@@ -386,3 +413,4 @@ if __name__ == "__main__":
 
     # Erstellen einer GUI-Instanz (vorausgesetzt, dass die GUI-Klasse implementiert ist)
     Test = GUI()
+    Login()
