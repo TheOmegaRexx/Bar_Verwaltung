@@ -83,6 +83,8 @@ class GUI:
 class Tressen:
     def __init__(self):
         self.preis = 0.0
+        self.current_order = []
+
         # Initialisierung des Fensters für die Tresenansicht
         self.tressen_fenster = customtkinter.CTk()
         self.tressen_fenster.title("Tressen")
@@ -153,16 +155,75 @@ class Tressen:
         self.tressen_fenster.mainloop()
 
     def bestellung(self):
-        pass
+            # Hier können Sie den Bestellvorgang implementieren
+            # Beachten Sie, dass Sie die Datenbankverbindung wiederherstellen müssen
+
+            # Beispiel: Annahme, dass die Bestellung erfolgreich ist
+            self.bestellung_abschließen()
+
+    def bestellung_abschließen(self):
+        # Hier implementieren Sie die Aktionen nach Abschluss der Bestellung
+
+        # Annahme: Geld wird aktualisiert
+        global geld
+        geld += self.preis
+        # Hier können Sie die Aktualisierung der Datenbank implementieren
+
+        # Bestellung abschließen
+        self.bestellung_listbox.delete(0, 'end')  # Leeren der Bestellungsliste
+        self.preis = 0.0  # Zurücksetzen des Preises
+        self.preis_label.config(text=f"Preis: {self.preis} €")  # Aktualisieren des Preislabels
 
     def hinzufuegen(self):
-        test = self.auswahl_listbox_getraenke.get()
-        test.preis
-        self.preis = self.preis
-        print(test)
+        # Erhalten Sie den ausgewählten Artikel aus der ausgewählten Liste
+        selected_item = self.artikel_get()
+
+        if selected_item:
+            # Extrahieren Sie den Preis aus dem ausgewählten Artikel (angenommen, der Preis ist am Ende des Strings)
+            selected_price = float(selected_item.split()[-1][:-1])
+            
+            # Fügen Sie den ausgewählten Artikel zur Bestellungsliste hinzu
+            self.bestellung_listbox.insert("end", selected_item)
+
+            # Aktualisieren Sie den Gesamtpreis
+            self.preis += selected_price
+            self.preis_label.configure(text=f"Preis: {self.preis} €")
+
+    def artikel_get(self):
+        # Erhalten Sie den ausgewählten Index aus der ausgewählten Liste
+        selected_index = self.auswahl_listbox_getraenke.curselection()
+        if selected_index:
+            selected_item = self.auswahl_listbox_getraenke.get(selected_index)
+        else:
+            selected_index = self.auswahl_listbox_snacks.curselection()
+            if selected_index:
+                selected_item = self.auswahl_listbox_snacks.get(selected_index)
+            else:
+                selected_index = self.auswahl_listbox_rauchwaren.curselection()
+                if selected_index:
+                    selected_item = self.auswahl_listbox_rauchwaren.get(selected_index)
+                else:
+                    # Wenn nichts ausgewählt ist, gebe None zurück oder handle den Fall entsprechend
+                    selected_item = None
+        return selected_item
 
     def entfernen(self):
-        pass
+        # Erhalten Sie den ausgewählten Index aus der Bestellungsliste
+        selected_index = self.bestellung_listbox.curselection()
+
+        if selected_index:
+            # Extrahieren Sie den ausgewählten Artikel aus der Bestellungsliste
+            selected_item = self.bestellung_listbox.get(selected_index)
+
+            # Extrahieren Sie den Preis des ausgewählten Artikels (angenommen, der Preis ist am Ende des Strings)
+            selected_price = float(selected_item.split()[-1][:-1])
+
+            # Entfernen Sie den ausgewählten Artikel aus der Bestellungsliste
+            self.bestellung_listbox.delete(selected_index)
+
+            # Aktualisieren Sie den Gesamtpreis
+            self.preis -= selected_price
+            self.preis_label.configure(text=f"Preis: {self.preis} €")
 
     def nachricht(self):
         # Erstellung eines Fensters für die Nachrichten
@@ -388,6 +449,15 @@ class Datenbank:
             getraenke_liste.append(Getränke(name, preis, menge, liter, alkohol, id))
         cursor.close()
         return getraenke_liste
+    
+    def db_passwort(self):
+        pass
+
+    def db_benutzer(self):
+        pass
+
+    def db_geld(self):
+        pass
 
 
 if __name__ == "__main__":
@@ -413,4 +483,4 @@ if __name__ == "__main__":
 
     # Erstellen einer GUI-Instanz (vorausgesetzt, dass die GUI-Klasse implementiert ist)
     Test = GUI()
-    Login()
+    #Login()
