@@ -1,9 +1,13 @@
 from tkinter import *
 from CTkMessagebox import CTkMessagebox
 import mysql.connector
+import pygame as pg
 import customtkinter
 from CTkListbox import *
 from abc import ABC, abstractclassmethod
+from datetime import datetime
+from playsound import playsound
+
 
 
 geld = 100
@@ -155,24 +159,29 @@ class Tressen:
         self.tressen_fenster.mainloop()
 
     def bestellung(self):
-            # Hier können Sie den Bestellvorgang implementieren
-            # Beachten Sie, dass Sie die Datenbankverbindung wiederherstellen müssen
 
-            # Beispiel: Annahme, dass die Bestellung erfolgreich ist
-            self.bestellung_abschließen()
+        # Bestätigungsnachricht für das Senden der Nachricht
+        auswahl = CTkMessagebox(title="Exit?", message=f"Möchten Sie die Bestellung aufgeben? \nPreis: {self.preis} €",
+                                icon="question", option_1="Nein", option_2="Ja")
 
-    def bestellung_abschließen(self):
+        wahl = auswahl.get()
+        if wahl == "Ja":
         # Hier implementieren Sie die Aktionen nach Abschluss der Bestellung
 
         # Annahme: Geld wird aktualisiert
-        global geld
-        geld += self.preis
-        # Hier können Sie die Aktualisierung der Datenbank implementieren
+            global geld
+            geld += self.preis
+            # Hier können Sie die Aktualisierung der Datenbank implementieren
 
-        # Bestellung abschließen
-        self.bestellung_listbox.delete(0, 'end')  # Leeren der Bestellungsliste
-        self.preis = 0.0  # Zurücksetzen des Preises
-        self.preis_label.config(text=f"Preis: {self.preis} €")  # Aktualisieren des Preislabels
+            # Bestellung abschließen
+            self.bestellung_listbox.delete(0, 'end')  # Leeren der Bestellungsliste
+            self.preis = 0.0  # Zurücksetzen des Preises
+            self.preis_label.configure(text=f"Preis: {self.preis} €")  # Aktualisieren des Preislabels
+            playsound('Sound\\Kashing.wav')
+
+
+        else:
+            pass
 
     def hinzufuegen(self):
         # Erhalten Sie den ausgewählten Artikel aus der ausgewählten Liste
@@ -281,12 +290,9 @@ class Lager:
         self.auswahl_listbox_rauchwaren.grid()
 
         self.artikel_hinzufuegen_button = customtkinter.CTkButton(
-            self.lager_fenster, text="Hinzufügen", command=self.artikel_hinzufuegen)
+            self.lager_fenster, text="Bestand Erhöhen", command=self.artikel_hinzufuegen)
         self.artikel_hinzufuegen_button.grid(row=2)
 
-        self.artikel_entfernen_button = customtkinter.CTkButton(
-            self.lager_fenster, text="Entfernen", command=self.artikel_entfernen)
-        self.artikel_entfernen_button.grid(row=3)
 
         for index, item in enumerate(getraenke_liste):
             self.auswahl_listbox_getraenke.insert(
@@ -305,8 +311,6 @@ class Lager:
     def artikel_hinzufuegen(self):
         pass
 
-    def artikel_entfernen(self):
-        pass
 
 
 class Rechnungen:
